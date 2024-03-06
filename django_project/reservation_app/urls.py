@@ -29,7 +29,7 @@ urlpatterns = [
     path('', views.docs, name='documents'),
 
 
-    path('v1/ihas', views.get_ihas, name='get_ihas'),
+    path('api/ihas', views.get_ihas, name='get_ihas'),
     path('api/iha/find', views.get_specific_iha, name='get_specific_iha'),
     path('v1/iha/create', views.create_iha, name='iha_create'),
     path('v1/iha/delete/<int:iha_id>', views.delete_iha, name='iha_delete'),

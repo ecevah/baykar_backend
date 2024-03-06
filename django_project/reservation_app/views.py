@@ -148,7 +148,7 @@ def delete_iha(request, iha_id):
     try:
         iha = IHA.objects.get(id=iha_id)
         iha.delete()
-        return JsonResponse({'status': True, 'message': 'IHA Deleted. ID={iha_id}'}, status=204)
+        return JsonResponse({'status': True, 'message': f'IHA Deleted. ID={iha_id}'}, status=204)
     except IHA.DoesNotExist:
         return JsonResponse({'status': False, 'message': 'IHA not found.'}, status=404)
     except Exception as e:
@@ -222,7 +222,19 @@ def login_customer(request):
         }
         token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
 
-        return JsonResponse({'token': token})
+        response_data = {
+            'status': True,
+            'message': f'Login Succesful. Welcome {customer.name} :)',
+            'data': {
+                'id': customer.pk,
+                'name': customer.name,
+                'surname': customer.surname,
+                'username': customer.username
+            },
+            'token': token
+        }
+
+        return JsonResponse(response_data, status=200)
 
     except Exception as e:
         error_data = {
@@ -354,7 +366,7 @@ def delete_customer(request, customer_id):
     try:
         customer = Customers.objects.get(id=customer_id)
         customer.delete()
-        return JsonResponse({'status': True, 'message': 'Customer Deleted. ID={customer_id}'}, status=204)
+        return JsonResponse({'status': True, 'message': f'Customer Deleted. ID={customer_id}'}, status=204)
     except Customers.DoesNotExist:
         return JsonResponse({'status': False, 'message': 'Customer not found.'}, status=404)
     except Exception as e:
@@ -556,7 +568,7 @@ def delete_reservation(request, reservation_id):
     try:
         reservation = Reservations.objects.get(id=reservation_id)
         reservation.delete()
-        return JsonResponse({'status': True, 'message': 'Reservation Deleted. ID={reservation_id}'}, status=204)
+        return JsonResponse({'status': True, 'message': f'Reservation Deleted. ID={reservation_id}'}, status=204)
     except Reservations.DoesNotExist:
         return JsonResponse({'status': False, 'message': 'Reservation not found.'}, status=404)
     except Exception as e:
@@ -626,12 +638,23 @@ def login_admin(request):
             raise ValueError("Invalid username or password")
 
         payload = {
-            'message': 'Welcome Boss',
+            'message': 'Welcome Boss !',
             'exp': datetime.utcnow() + timedelta(days=1) 
         }
         token = jwt.encode(payload, settings.SECRET_KEY_ADMIN, algorithm='HS256')
 
-        return JsonResponse({'token': token})
+        response_data = {
+            'status': True,
+            'message': f'Login Succesful. Welcome Boss :)',
+            'data': {
+                'name': 'Ahmet',
+                'surname': 'Ecevit',
+                'username': 'eecevah'
+            },
+            'token': token
+        }
+
+        return JsonResponse(response_data, status=200)
 
     except Exception as e:
         error_data = {
