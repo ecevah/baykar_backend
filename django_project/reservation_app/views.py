@@ -1,11 +1,13 @@
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from reservation_app.models import IHA, Customers, Reservations
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ValidationError
 import json
-import datetime
+from datetime import datetime, timedelta
+import jwt
+from django.conf import settings
 
 """
 IHA
@@ -188,28 +190,69 @@ def update_iha(request, iha_id):
 """
 Customer
 """
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def login_customer(request):
+    try:
+        data = request.body.decode('utf-8')
+        json_data = json.loads(data)
+        username = json_data.get('username')
+        password = json_data.get('password')
+
+        if not username or not password:
+            raise ValueError("Username and password are required")
+
+        # Müşteriyi kullanıcı adına göre bul
+        try:
+            customer = Customers.objects.get(username=username)
+        except Customers.DoesNotExist:
+            raise ValueError("Invalid username or password")
+
+        # Şifreyi kontrol et
+        if not check_password(password, customer.password):
+            raise ValueError("Invalid username or password")
+
+        # Kullanıcı doğrulandı, JWT oluştur
+        payload = {
+            'user_id': customer.id,
+            'username': customer.username,
+            'exp': datetime.utcnow() + timedelta(days=1) 
+        }
+        token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
+
+        return JsonResponse({'token': token})
+
+    except Exception as e:
+        error_data = {
+            'status': False,
+            'message': str(e)
+        }
+        return JsonResponse(error_data, status=400)
+
 @csrf_exempt
 @require_http_methods(["POST"])
 def create_customer(request):
     try:
         data = request.body.decode('utf-8')
         json_data = json.loads(data)
-
         name = json_data.get('name')
         surname = json_data.get('surname')
         username = json_data.get('username')
         password = json_data.get('password')
 
-        hashed_password = make_password(password)
-
         if not name or not surname or not username or not password:
             raise ValueError("All fields are required")
 
+        if Customers.objects.filter(username=username).exists():
+            raise ValueError("Username already exists")
+
+        hashed_password = make_password(password)
         new_customer = Customers.objects.create(
             name=name,
             surname=surname,
             username=username,
-            password= hashed_password
+            password=hashed_password
         )
 
         response_data = {
@@ -220,7 +263,6 @@ def create_customer(request):
                 'name': new_customer.name,
                 'surname': new_customer.surname,
                 'username': new_customer.username,
-                'password': new_customer.password
             }
         }
 
@@ -231,7 +273,6 @@ def create_customer(request):
             'status': False,
             'message': str(e)
         }
-
         return JsonResponse(error_data, status=400)
 
 @require_http_methods(["GET"])
@@ -319,7 +360,7 @@ def delete_customer(request, customer_id):
         return JsonResponse({'status': False, 'message': str(e)}, status=400)
 
 @csrf_exempt
-@require_http_methods(["POST"])
+@require_http_methods(["PUT"])
 def update_customer(request, customer_id):
     try:
         data = json.loads(request.body.decode('utf-8'))
@@ -521,7 +562,7 @@ def delete_reservation(request, reservation_id):
         return JsonResponse({'status': False, 'message': str(e)}, status=400)
 
 @csrf_exempt
-@require_http_methods(["POST"])
+@require_http_methods(["PUT"])
 def update_reservation(request, reservation_id):
     try:
         data = json.loads(request.body.decode('utf-8'))

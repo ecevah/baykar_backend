@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
 
-    path('ihas', views.get_ihas, name='get_ihas'),
+    path('api/ihas', views.get_ihas, name='get_ihas'),
     path('iha/create', views.create_iha, name='iha_create'),
     path('iha/find', views.get_specific_iha, name='get_specific_iha'),
 
@@ -11,6 +11,7 @@ urlpatterns = [
     path('customers', views.get_customers, name='get_customers'),
     path('customer/create', views.create_customer, name='customer_create'),
     path('customer/find', views.get_specific_customer, name='get_specific_customer'),
+    path('login', views.login_customer, name='login'),
 
 
     path('reservations', views.get_reservations, name='get_reservations'),
