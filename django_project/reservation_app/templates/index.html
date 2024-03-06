@@ -43,7 +43,11 @@
 Header:
     Authorization: [your_token_here]
 </code></pre>
-
+<p><strong>Error Response:</strong></p>
+    <pre><code>{
+    "status": false,
+    "message": "Error message"
+}</code></pre>
     <h3>2. Create IHA (/v1/iha/create)</h3>
     <p>
       Creates a new IHA. Requires details about the IHA in the request body.
@@ -59,7 +63,11 @@ Body:
         ...
     }
 </code></pre>
-
+<p><strong>Error Response:</strong></p>
+    <pre><code>{
+    "status": false,
+    "message": "Error message"
+}</code></pre>
     <h3>3. Delete IHA (/v1/iha/delete/&lt;iha_id&gt;)</h3>
     <p>
       Deletes a specific IHA by ID. Replace &lt;iha_id&gt; with the actual ID of
@@ -69,6 +77,11 @@ Body:
 Header:
     Authorization: [your_token_here]
 </code></pre>
+<p><strong>Error Response:</strong></p>
+    <pre><code>{
+    "status": false,
+    "message": "Error message"
+}</code></pre>
 
     <h3>4. Update IHA (/v1/iha/update/&lt;iha_id&gt;)</h3>
     <p>
@@ -85,6 +98,45 @@ Body:
         ...
     }
 </code></pre>
+<p><strong>Error Response:</strong></p>
+    <pre><code>{
+    "status": false,
+    "message": "Error message"
+}</code></pre>
+<h3>5. Find Specific IHA (/api/iha/find)</h3>
+    <p>Retrieves specific IHA details based on query parameters such as brand, model, weight, category, and price.</p>
+    <pre><code>GET /api/iha/find?brand=[brand]&amp;model=[model]&amp;weight=[weight]&amp;category=[category]&amp;price=[price]
+Header:
+    Authorization: [your_token_here]
+</code></pre>
+    <p><strong>Query Parameters:</strong></p>
+    <ul>
+        <li><code>brand</code> (optional): Filter IHAs by brand.</li>
+        <li><code>model</code> (optional): Filter IHAs by model.</li>
+        <li><code>weight</code> (optional): Filter IHAs by weight.</li>
+        <li><code>category</code> (optional): Filter IHAs by category.</li>
+        <li><code>price</code> (optional): Filter IHAs by price.</li>
+    </ul>
+    <p><strong>Response:</strong></p>
+    <pre><code>{
+    "status": true,
+    "message": "IHA information retrieved successfully.",
+    "data": [
+        {
+            "brand": "Brand Name",
+            "model": "Model",
+            "weight": "Weight",
+            "category": "Category",
+            "price": "Price"
+        },
+        ...
+    ]
+}</code></pre>
+    <p><strong>Error Response:</strong></p>
+    <pre><code>{
+    "status": false,
+    "message": "Error message"
+}</code></pre>
 
     <h1>API Usage for Customer</h1>
 
@@ -94,6 +146,11 @@ Body:
     <pre><code>GET /api/customers
 Header:
     Authorization: [your_token_here]</code></pre>
+    <p><strong>Error Response:</strong></p>
+    <pre><code>{
+    "status": false,
+    "message": "Error message"
+}</code></pre>
 
     <h3>2. Create Customer (/api/customer/create)</h3>
     <pre><code>POST /api/customer/create
@@ -106,6 +163,11 @@ Body:
         "email": "email@example.com",
         "phoneNumber": "1234567890"
     }</code></pre>
+    <p><strong>Error Response:</strong></p>
+    <pre><code>{
+    "status": false,
+    "message": "Error message"
+}</code></pre>
 
     <h3>3. Delete Customer (/api/customer/delete/&lt;customer_id&gt;)</h3>
     <pre><code>DELETE /api/customer/delete/[customer_id]
@@ -123,6 +185,43 @@ Body:
         "email": "newemail@example.com",
         "phoneNumber": "0987654321"
     }</code></pre>
+    <p><strong>Error Response:</strong></p>
+    <pre><code>{
+    "status": false,
+    "message": "Error message"
+}</code></pre>
+<h3>5. Find Specific Customer (/api/customer/find)</h3>
+    <p>This endpoint allows for retrieving specific customer details based on various query parameters such as ID, name, surname, and username.</p>
+    <pre><code>GET /api/customer/find?id=[id]&amp;name=[name]&amp;surname=[surname]&amp;username=[username]
+Header:
+    Authorization: [your_token_here]
+</code></pre>
+    <p><strong>Query Parameters:</strong></p>
+    <ul>
+        <li><code>id</code> (optional): Filter customers by their unique ID.</li>
+        <li><code>name</code> (optional): Filter customers by their first name.</li>
+        <li><code>surname</code> (optional): Filter customers by their surname.</li>
+        <li><code>username</code> (optional): Filter customers by their username.</li>
+    </ul>
+    <p><strong>Successful Response:</strong></p>
+    <pre><code>{
+    "status": true,
+    "message": "Customers retrieved successfully.",
+    "data": [
+        {
+            "id": "Customer ID",
+            "name": "First Name",
+            "surname": "Surname",
+            "username": "Username"
+        },
+        ...
+    ]
+}</code></pre>
+    <p><strong>Error Response:</strong></p>
+    <pre><code>{
+    "status": false,
+    "message": "Error message"
+}</code></pre>
 
     <h1>API Usage for Reservation</h1>
 
@@ -132,7 +231,11 @@ Body:
     <pre><code>GET /api/reservations
 Header:
     Authorization: [your_token_here]</code></pre>
-
+    <p><strong>Error Response:</strong></p>
+    <pre><code>{
+    "status": false,
+    "message": "Error message"
+}</code></pre>
     <h3>2. Create Reservation (/api/reservation/create)</h3>
     <pre><code>POST /api/reservation/create
 Header:
@@ -144,14 +247,22 @@ Body:
         "reservationDate": "YYYY-MM-DD",
         "durationHours": "Number of Hours"
     }</code></pre>
-
+    <p><strong>Error Response:</strong></p>
+    <pre><code>{
+    "status": false,
+    "message": "Error message"
+}</code></pre>
     <h3>
       3. Delete Reservation (/api/reservation/delete/&lt;reservation_id&gt;)
     </h3>
     <pre><code>DELETE /api/reservation/delete/[reservation_id]
 Header:
     Authorization: [your_token_here]</code></pre>
-
+    <p><strong>Error Response:</strong></p>
+    <pre><code>{
+    "status": false,
+    "message": "Error message"
+}</code></pre>
     <h3>
       4. Update Reservation (/api/reservation/update/&lt;reservation_id&gt;)
     </h3>
@@ -165,5 +276,57 @@ Body:
         "reservationDate": "NewNew YYYY-MM-DD",
         "durationHours": "New Number of Hours"
     }</code></pre>
+    <p><strong>Error Response:</strong></p>
+    <pre><code>{
+    "status": false,
+    "message": "Error message"
+}</code></pre>
+<h3>5. Find Specific Reservation (/api/reservation/find)</h3>
+    <p>This endpoint allows for retrieving specific reservation details based on various query parameters such as reservation ID, start date range, IHA brand/model, and customer details.</p>
+    <pre><code>GET /api/reservation/find?reservation_id=[reservation_id]&amp;start_date_from=[start_date_from]&amp;start_date_to=[start_date_to]&amp;iha_brand=[iha_brand]&amp;iha_model=[iha_model]&amp;customer_name=[customer_name]&amp;customer_surname=[customer_surname]&amp;customer_username=[customer_username]
+Header:
+    Authorization: [your_token_here]
+</code></pre>
+    <p><strong>Query Parameters:</strong></p>
+    <ul>
+        <li><code>reservation_id</code> (optional): Filter reservations by their unique ID.</li>
+        <li><code>start_date_from</code> (optional): Filter reservations starting from this date.</li>
+        <li><code>start_date_to</code> (optional): Filter reservations ending to this date.</li>
+        <li><code>iha_brand</code> (optional): Filter reservations by IHA brand.</li>
+        <li><code>iha_model</code> (optional): Filter reservations by IHA model.</li>
+        <li><code>customer_name</code> (optional): Filter reservations by customer's first name.</li>
+        <li><code>customer_surname</code> (optional): Filter reservations by customer's surname.</li>
+        <li><code>customer_username</code> (optional): Filter reservations by customer's username.</li>
+    </ul>
+    <p><strong>Successful Response:</strong></p>
+    <pre><code>{
+    "status": true,
+    "message": "Reservations retrieved successfully.",
+    "data": [
+        {
+            "reservation_id": "Reservation ID",
+            "iha": {
+                "brand": "Brand",
+                "model": "Model",
+                "category": "Category",
+                "price": "Price"
+            },
+            "customer": {
+                "name": "Name",
+                "surname": "Surname",
+                "username": "Username"
+            },
+            "start_date": "Start Date",
+            "finish_date": "Finish Date",
+            "total_price": "Total Price"
+        },
+        ...
+    ]
+}</code></pre>
+    <p><strong>Error Response:</strong></p>
+    <pre><code>{
+    "status": false,
+    "message": "Error message"
+}</code></pre>
   </body>
 </html>
