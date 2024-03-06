@@ -42,6 +42,7 @@ class Reservations(models.Model):
     start_date = models.DateTimeField()  
     finish_date = models.DateTimeField() 
     total_price = models.IntegerField(validators=[MinValueValidator(0)])
+    number = models.IntegerField(default=1)
 
     def clean(self):
         now = datetime.now(pytz.timezone('UTC')) 
