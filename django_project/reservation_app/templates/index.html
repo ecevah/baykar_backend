@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Detailed API Usage for Reservation App</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      h1 {
+        color: #333;
+      }
+      h2,
+      h3 {
+        color: #555;
+      }
+      p,
+      pre {
+        margin-left: 20px;
+      }
+      pre {
+        background-color: #f4f4f4;
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Detailed API Usage for Reservation App</h1>
+    <p>
+        This document provides detailed examples on how to use each API endpoint in the 
+        Reservation App, including the required Authorization header and request body for 
+        POST requests. <br></br> /v1/ is reserved exclusively for admin access, while /api/ is designated 
+        solely for customer use.
+    </p>
+
+    <h1>API Usage for IHA</h1>
+    <h2>API Endpoints and Usage</h2>
+
+    <h3>1. List IHAs (/api/ihas)</h3>
+    <p>Retrieves a list of all IHAs.</p>
+    <pre><code>GET /api/ihas
+Header:
+    Authorization: [your_token_here]
+</code></pre>
+
+    <h3>2. Create IHA (/v1/iha/create)</h3>
+    <p>
+      Creates a new IHA. Requires details about the IHA in the request body.
+    </p>
+    <pre><code>POST /v1/iha/create
+Header:
+    Authorization: [your_token_here]
+Body:
+    {
+        "name": "IHA Name",
+        "model": "Model",
+        "manufacturer": "Manufacturer",
+        ...
+    }
+</code></pre>
+
+    <h3>3. Delete IHA (/v1/iha/delete/&lt;iha_id&gt;)</h3>
+    <p>
+      Deletes a specific IHA by ID. Replace &lt;iha_id&gt; with the actual ID of
+      the IHA you want to delete.
+    </p>
+    <pre><code>DELETE /v1/iha/delete/[iha_id]
+Header:
+    Authorization: [your_token_here]
+</code></pre>
+
+    <h3>4. Update IHA (/v1/iha/update/&lt;iha_id&gt;)</h3>
+    <p>
+      Updates the details of a specific IHA. Provide the new details in the
+      request body.
+    </p>
+    <pre><code>PUT /v1/iha/update/[iha_id]
+Header:
+    Authorization: [your_token_here]
+Body:
+    {
+        "name": "New Name",
+        "model": "New Model",
+        ...
+    }
+</code></pre>
+
+    <h1>API Usage for Customer</h1>
+
+    <h2>API Endpoints and Usage</h2>
+
+    <h3>1. List Customers (/api/customers)</h3>
+    <pre><code>GET /api/customers
+Header:
+    Authorization: [your_token_here]</code></pre>
+
+    <h3>2. Create Customer (/api/customer/create)</h3>
+    <pre><code>POST /api/customer/create
+Header:
+    Authorization: [your_token_here]
+Body:
+    {
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "email": "email@example.com",
+        "phoneNumber": "1234567890"
+    }</code></pre>
+
+    <h3>3. Delete Customer (/api/customer/delete/&lt;customer_id&gt;)</h3>
+    <pre><code>DELETE /api/customer/delete/[customer_id]
+Header:
+    Authorization: [your_token_here]</code></pre>
+
+    <h3>4. Update Customer (/api/customer/update/&lt;customer_id&gt;)</h3>
+    <pre><code>PUT /api/customer/update/[customer_id]
+Header:
+    Authorization: [your_token_here]
+Body:
+    {
+        "firstName": "New First Name",
+        "lastName": "New Last Name",
+        "email": "newemail@example.com",
+        "phoneNumber": "0987654321"
+    }</code></pre>
+
+    <h1>API Usage for Reservation</h1>
+
+    <h2>API Endpoints and Usage</h2>
+
+    <h3>1. List Reservations (/api/reservations)</h3>
+    <pre><code>GET /api/reservations
+Header:
+    Authorization: [your_token_here]</code></pre>
+
+    <h3>2. Create Reservation (/api/reservation/create)</h3>
+    <pre><code>POST /api/reservation/create
+Header:
+    Authorization: [your_token_here]
+Body:
+    {
+        "customerId": "Customer ID",
+        "ihaId": "IHA ID",
+        "reservationDate": "YYYY-MM-DD",
+        "durationHours": "Number of Hours"
+    }</code></pre>
+
+    <h3>
+      3. Delete Reservation (/api/reservation/delete/&lt;reservation_id&gt;)
+    </h3>
+    <pre><code>DELETE /api/reservation/delete/[reservation_id]
+Header:
+    Authorization: [your_token_here]</code></pre>
+
+    <h3>
+      4. Update Reservation (/api/reservation/update/&lt;reservation_id&gt;)
+    </h3>
+    <pre><code>PUT /api/reservation/update/[reservation_id]
+Header:
+    Authorization: [your_token_here]
+Body:
+    {
+        "customerId": "New Customer ID",
+        "ihaId": "New IHA ID",
+        "reservationDate": "NewNew YYYY-MM-DD",
+        "durationHours": "New Number of Hours"
+    }</code></pre>
+  </body>
+</html>

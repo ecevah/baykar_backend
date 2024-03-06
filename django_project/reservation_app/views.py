@@ -1,13 +1,19 @@
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
-from reservation_app.models import IHA, Customers, Reservations
 from django.contrib.auth.hashers import make_password, check_password
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ValidationError
+from django.conf import settings
+from django.shortcuts import render
 import json
 from datetime import datetime, timedelta
 import jwt
-from django.conf import settings
+from reservation_app.models import IHA, Customers, Reservations
+
+
+
+def docs(request):
+    return render(request, 'index.html')
 
 """
 IHA
@@ -95,7 +101,6 @@ def get_specific_iha(request):
     try:
         ihas_query = IHA.objects.all()
 
-        # URL'den gelen sorgu parametrelerini kontrol et
         brand = request.GET.get('brand')
         model = request.GET.get('model')
         weight = request.GET.get('weight')
@@ -109,7 +114,6 @@ def get_specific_iha(request):
         if weight:
             ihas_query = ihas_query.filter(weight=weight)
         if category:
-            # category değerini doğrudan filtrelemek için enum'un adını kullanabilirsiniz.
             ihas_query = ihas_query.filter(category=category)
         if price:
             ihas_query = ihas_query.filter(price=price)
@@ -203,17 +207,14 @@ def login_customer(request):
         if not username or not password:
             raise ValueError("Username and password are required")
 
-        # Müşteriyi kullanıcı adına göre bul
         try:
             customer = Customers.objects.get(username=username)
         except Customers.DoesNotExist:
             raise ValueError("Invalid username or password")
 
-        # Şifreyi kontrol et
         if not check_password(password, customer.password):
             raise ValueError("Invalid username or password")
 
-        # Kullanıcı doğrulandı, JWT oluştur
         payload = {
             'user_id': customer.id,
             'username': customer.username,
@@ -412,7 +413,7 @@ def create_reservation(request):
             raise ValueError("IHA ID, Customer ID, Start Date, and Finish Date are required")
 
         iha = IHA.objects.get(pk=iha_id)
-        customer = Customers.objects.get(pk=customer_id)  # Customer nesnesini doğru bir şekilde al
+        customer = Customers.objects.get(pk=customer_id) 
 
         start_datetime = datetime.datetime.fromisoformat(start_date_str)
         finish_datetime = datetime.datetime.fromisoformat(finish_date_str)
@@ -568,7 +569,6 @@ def update_reservation(request, reservation_id):
         data = json.loads(request.body.decode('utf-8'))
         reservation = Reservations.objects.get(id=reservation_id)
         
-        # start_date ve finish_date güncellemesi için doğru format kullanılmalıdır.
         start_date_str = data.get('start_date')
         finish_date_str = data.get('finish_date')
         if start_date_str:
@@ -606,3 +606,36 @@ def update_reservation(request, reservation_id):
     except Exception as e:
         return JsonResponse({'status': False, 'message': str(e)}, status=400)
 
+"""
+Admin Login
+"""
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def login_admin(request):
+    try:
+        data = request.body.decode('utf-8')
+        json_data = json.loads(data)
+        username = json_data.get('username')
+        password = json_data.get('password')
+
+        if not username or not password:
+            raise ValueError("Username and password are required")
+
+        if password != 'admin' and username != 'admin':
+            raise ValueError("Invalid username or password")
+
+        payload = {
+            'message': 'Welcome Boss',
+            'exp': datetime.utcnow() + timedelta(days=1) 
+        }
+        token = jwt.encode(payload, settings.SECRET_KEY_ADMIN, algorithm='HS256')
+
+        return JsonResponse({'token': token})
+
+    except Exception as e:
+        error_data = {
+            'status': False,
+            'message': str(e)
+        }
+        return JsonResponse(error_data, status=400)
