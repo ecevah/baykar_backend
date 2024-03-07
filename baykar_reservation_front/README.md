@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Baykar Rezervasyon Sistemi Ön Yüzü
 
-## Getting Started
+Bu proje, Baykar firmasının mülakat süreci için geliştirilmiş bir Django backend ile bağlantılı basit bir sitedir. Next.js ve TailwindCSS kullanılarak geliştirilmiş olup, veri alışverişi için Fetch API ve uygulama durum yönetimi için Redux kullanılmıştır.
 
-First, run the development server:
+## Teknolojiler
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Next.js
+- TailwindCSS
+- Fetch API
+- Redux
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Başlarken
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Projeyi yerel geliştirme ortamınızda çalıştırmak için aşağıdaki adımları takip edin.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Ön Koşullar
 
-## Learn More
+- Node.js ve npm yüklü olmalıdır.
 
-To learn more about Next.js, take a look at the following resources:
+### Kurulum
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Projeyi klonlayın veya indirin.
+2. Proje dizinine gidin:
+   ```bash
+   cd baykar_reservation_front
+   ```
+3. Gerekli paketleri yükleyin:
+   ```bash
+   npm install
+   ```
+4. Geliştirme sunucusunu başlatın:
+   ```bash
+   npm run dev
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Erişim
 
-## Deploy on Vercel
+Geliştirme sunucusu başlatıldıktan sonra, uygulamaya [http://localhost:3000](http://localhost:3000) adresinden tarayıcınız üzerinden erişebilirsiniz.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Özellikler
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Django backend ile veri alışverişi.
+- Dinamik içerik yönetimi için Fetch API.
+- Uygulama durum yönetimi için Redux.
+
+## Ekran Görüntüleri
+
+Projeye ait ekran görüntülerini aşağıda bulabilirsiniz:
+
+![Login Page](loginPage.png)
+![Rent IHA Page](rentIhaPage.png)
+![Reservation IHA Page](reservationPage.png)
+![Account Page](rentIhaPage.png)
