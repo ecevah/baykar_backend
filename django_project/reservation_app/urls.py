@@ -28,6 +28,8 @@ http://127.0.0.1:8000 => Documents Page
 urlpatterns = [
     path('', views.docs, name='documents'),
 
+    path('api/verify', views.get_verify, name='get_verify'),
+
     path('api/ihas', views.get_ihas, name='get_ihas'),
     path('api/iha/find', views.get_specific_iha, name='get_specific_iha'),
     path('v1/iha/create', views.create_iha, name='iha_create'),
@@ -39,16 +41,14 @@ urlpatterns = [
     path('register', views.create_customer, name='create_customer'),
     path('v1/customers', views.get_customers, name='get_customers'),
     path('api/customer/find', views.get_specific_customer, name='get_specific_customer'),
-    path('api/delete/<int:customer_id>', views.delete_customer, name='delete_customer'),
-    path('api/update/<int:customer_id>', views.update_customer, name='update_customer'),
+    path('api/customer/delete/<int:customer_id>', views.delete_customer, name='delete_customer'),
+    path('api/customer/update/<int:customer_id>', views.update_customer, name='update_customer'),
 
 
     path('api/reservations', views.get_reservations, name='get_reservations'),
     path('api/reservation/create', views.create_reservation, name='reservation_create'),
     path('api/reservation/find', views.get_specific_reservation, name='get_specific_reservation'),
-    path('v1/delete/<int:reservation_id>', views.delete_reservation, name='delete_reservation'),
-    path('v1/update/<int:reservation_id>', views.update_reservation, name='update_reservation'),
-
-
+    path('api/reservation/delete/<int:reservation_id>', views.delete_reservation, name='delete_reservation'),
+    path('v1/reservation/update/<int:reservation_id>', views.update_reservation, name='update_reservation'),
 
 ]

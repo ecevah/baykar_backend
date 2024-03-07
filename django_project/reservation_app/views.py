@@ -78,11 +78,13 @@ def get_ihas(request):
 
         for iha in ihas:
             iha_data.append({
+                "id": iha.pk,
                 "brand": iha.brand,
                 "model": iha.model,
                 "weight": iha.weight,
                 "category": iha.category,
-                "price": iha.price
+                "price": iha.price,
+                'image_url': iha.image.url if iha.image else None
             })
         
         response_data = {
@@ -132,7 +134,8 @@ def get_specific_iha(request):
             "model": iha.model,
             "weight": iha.weight,
             "category": iha.category,
-            "price": iha.price
+            "price": iha.price,
+            'image_url': iha.image.url if iha.image else None
         } for iha in ihas_query]
 
         response_data = {
@@ -417,23 +420,22 @@ Reservation
 @require_http_methods(["POST"])
 def create_reservation(request):
     try:
-        data = request.body.decode('utf-8')
-        json_data = json.loads(data)
+        data = json.loads(request.body.decode('utf-8'))
 
-        iha_id = json_data.get('iha_id')
-        customer_id = json_data.get('customer_id')
-        start_date_str = json_data.get('start_date')
-        finish_date_str = json_data.get('finish_date')
-        number = json_data.get('number')
+        iha_id = data.get('iha_id')
+        customer_id = data.get('customer_id')
+        start_date_str = data.get('start_date')
+        finish_date_str = data.get('finish_date')
+        number = data.get('number')
 
-        if not iha_id or not customer_id or not start_date_str or not finish_date_str:
+        if not all([iha_id, customer_id, start_date_str, finish_date_str]):
             raise ValueError("IHA ID, Customer ID, Start Date, and Finish Date are required")
 
         iha = IHA.objects.get(pk=iha_id)
         customer = Customers.objects.get(pk=customer_id) 
 
-        start_datetime = datetime.datetime.fromisoformat(start_date_str)
-        finish_datetime = datetime.datetime.fromisoformat(finish_date_str)
+        start_datetime = datetime.strptime(start_date_str, "%Y-%m-%dT%H:%M:%S")
+        finish_datetime = datetime.strptime(finish_date_str, "%Y-%m-%dT%H:%M:%S")
 
         reservation_duration_hours = (finish_datetime - start_datetime).total_seconds() / 3600
         total_price = reservation_duration_hours * iha.price * number
@@ -444,7 +446,7 @@ def create_reservation(request):
             start_date=start_datetime,
             finish_date=finish_datetime,
             total_price=total_price,
-            number= number
+            number=number
         )
 
         response_data = {
@@ -539,7 +541,8 @@ def get_specific_reservation(request):
                 "brand": reservation.iha.brand,
                 "model": reservation.iha.model,
                 "category": reservation.iha.category,
-                "price": reservation.iha.price
+                "price": reservation.iha.price,
+                'image_url': reservation.iha.image.url if reservation.iha.image else None
             },
             "customer": {
                 "name": reservation.customer.name,
@@ -568,12 +571,12 @@ def get_specific_reservation(request):
         return JsonResponse(error_data, status=400)
 
 @csrf_exempt
-@require_http_methods(["Delete"])
+@require_http_methods(["DELETE"])
 def delete_reservation(request, reservation_id):
     try:
         reservation = Reservations.objects.get(id=reservation_id)
         reservation.delete()
-        return JsonResponse({'status': True, 'message': f'Reservation Deleted. ID={reservation_id}'}, status=204)
+        return JsonResponse({'status': True, 'message': 'Reservation Deleted.'}, status=204)
     except Reservations.DoesNotExist:
         return JsonResponse({'status': False, 'message': 'Reservation not found.'}, status=404)
     except Exception as e:
@@ -666,4 +669,22 @@ def login_admin(request):
             'status': False,
             'message': str(e)
         }
+        return JsonResponse(error_data, status=400)
+
+@require_http_methods(["GET"])
+def get_verify(request):
+    try:
+        response_data = {
+            'status': True,
+            'message': 'Verify successful.',
+        }
+
+        return JsonResponse(response_data, safe=False, status=200)
+    
+    except Exception as e:
+        error_data = {
+            'status': False,
+            'message': str(e)
+        }
+
         return JsonResponse(error_data, status=400)
