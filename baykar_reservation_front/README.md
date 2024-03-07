@@ -47,7 +47,7 @@ Geliştirme sunucusu başlatıldıktan sonra, uygulamaya [http://localhost:3000]
 
 Projeye ait ekran görüntülerini aşağıda bulabilirsiniz:
 
-![Login Page](loginPage.png)
-![Rent IHA Page](rentIhaPage.png)
-![Reservation IHA Page](reservationPage.png)
-![Account Page](rentIhaPage.png)
+![Login Page](https://github.com/ecevah/baykar_backend/blob/main/baykar_reservation_front/public/loginPage.png)
+![Rent IHA Page](https://github.com/ecevah/baykar_backend/blob/main/baykar_reservation_front/public/rentIhaPage.png)
+![Reservation IHA Page](https://github.com/ecevah/baykar_backend/blob/main/baykar_reservation_front/public/reservationPage.png)
+![Account Page](https://github.com/ecevah/baykar_backend/blob/main/baykar_reservation_front/public/accountPage.png)
