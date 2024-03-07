@@ -22,13 +22,12 @@ IHA
 @require_http_methods(["POST"])
 def create_iha(request):
     try:
-        # JSON verisi artık request.POST üzerinden alınıyor
         brand = request.POST.get('brand')
         model = request.POST.get('model')
         weight = request.POST.get('weight')
         category = request.POST.get('category')
         price = request.POST.get('price')
-        image = request.FILES.get('image')  # Dosya, request.FILES içinden alınıyor
+        image = request.FILES.get('image') 
 
         if not brand or not model or not weight or not category or not price:
             raise ValueError("All fields are required")
