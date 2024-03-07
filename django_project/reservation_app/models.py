@@ -2,7 +2,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator, MinValueValidator
 from enum import Enum
-from datetime import datetime, timedelta
+from datetime import datetime
 import pytz
 
 class CategoryChoices(Enum):
@@ -20,6 +20,7 @@ class IHA(models.Model):
         choices=[(tag.name, tag.value) for tag in CategoryChoices]
     )
     price = models.IntegerField(validators=[MinValueValidator(0)])
+    image = models.ImageField(upload_to='iha_images/', null=True, blank=True)
 
 class Customers(models.Model):
     name = models.CharField(max_length=100)
@@ -35,6 +36,7 @@ class Customers(models.Model):
     def clean(self):
         if not any(c.islower() for c in self.password) or not any(c.isupper() for c in self.password):
             raise ValidationError("Password must contain at least one uppercase and one lowercase letter.")
+        
 
 class Reservations(models.Model):
     iha = models.ForeignKey(IHA, on_delete=models.CASCADE)

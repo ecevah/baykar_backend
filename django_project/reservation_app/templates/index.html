@@ -48,23 +48,40 @@ Header:
     "status": false,
     "message": "Error message"
 }</code></pre>
-    <h3>2. Create IHA (/v1/iha/create)</h3>
-    <p>
-      Creates a new IHA. Requires details about the IHA in the request body.
-    </p>
-    <pre><code>POST /v1/iha/create
+<h3>2. Create IHA (/v1/iha/create)</h3>
+<p>Creates a new IHA. Requires details about the IHA in the request body.</p>
+<pre><code>POST /v1/iha/create
 Header:
+    Content-Type: application/json
     Authorization: [your_token_here]
 Body:
     {
-        "name": "IHA Name",
+        "brand": "IHA Brand",
         "model": "Model",
-        "manufacturer": "Manufacturer",
-        ...
+        "weight": "Weight",
+        "category": "Category",
+        "price": "Price",
+        "image": "Optional image file"
     }
 </code></pre>
+
+<p><strong>Successful Response:</strong></p>
+<pre><code>{
+    "status": true,
+    "message": "IHA creation successful.",
+    "data": {
+        "id": "IHA ID",
+        "brand": "IHA Brand",
+        "model": "Model",
+        "weight": "Weight",
+        "category": "Category",
+        "price": "Price",
+        "image_url": "Optional image URL"
+    }
+}</code></pre>
+
 <p><strong>Error Response:</strong></p>
-    <pre><code>{
+<pre><code>{
     "status": false,
     "message": "Error message"
 }</code></pre>

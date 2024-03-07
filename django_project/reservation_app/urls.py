@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-
+from django.urls import path, include
 
 """
 untokenizer
@@ -28,7 +28,6 @@ http://127.0.0.1:8000 => Documents Page
 urlpatterns = [
     path('', views.docs, name='documents'),
 
-
     path('api/ihas', views.get_ihas, name='get_ihas'),
     path('api/iha/find', views.get_specific_iha, name='get_specific_iha'),
     path('v1/iha/create', views.create_iha, name='iha_create'),
@@ -49,4 +48,7 @@ urlpatterns = [
     path('api/reservation/find', views.get_specific_reservation, name='get_specific_reservation'),
     path('v1/delete/<int:reservation_id>', views.delete_reservation, name='delete_reservation'),
     path('v1/update/<int:reservation_id>', views.update_reservation, name='update_reservation'),
+
+
+
 ]

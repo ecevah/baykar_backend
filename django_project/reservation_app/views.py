@@ -22,19 +22,18 @@ IHA
 @require_http_methods(["POST"])
 def create_iha(request):
     try:
-        data = request.body.decode('utf-8')
-        json_data = json.loads(data)
-
-        brand = json_data.get('brand')
-        model = json_data.get('model')
-        weight = json_data.get('weight')
-        category = json_data.get('category')
-        price = json_data.get('price')
+        # JSON verisi artık request.POST üzerinden alınıyor
+        brand = request.POST.get('brand')
+        model = request.POST.get('model')
+        weight = request.POST.get('weight')
+        category = request.POST.get('category')
+        price = request.POST.get('price')
+        image = request.FILES.get('image')  # Dosya, request.FILES içinden alınıyor
 
         if not brand or not model or not weight or not category or not price:
             raise ValueError("All fields are required")
 
-        new_iha = IHA.objects.create(
+        iha = IHA(
             brand=brand,
             model=model,
             weight=weight,
@@ -42,20 +41,26 @@ def create_iha(request):
             price=price
         )
 
+        if image:
+            iha.image.save(image.name, image)
+
+        iha.save()
+
         response_data = {
             'status': True,
             'message': 'IHA creation successful.',
             'data': {
-                'id': new_iha.id,
-                'brand': new_iha.brand,
-                'model': new_iha.model,
-                'weight': new_iha.weight,
-                'category': new_iha.category,
-                'price': new_iha.price
+                'id': iha.id,
+                'brand': iha.brand,
+                'model': iha.model,
+                'weight': iha.weight,
+                'category': iha.category,
+                'price': iha.price,
+                'image_url': iha.image.url if iha.image else None,
             }
         }
 
-        return JsonResponse(response_data, safe=False, status=200)
+        return JsonResponse(response_data, status=200)
 
     except Exception as e:
         error_data = {
@@ -101,12 +106,15 @@ def get_specific_iha(request):
     try:
         ihas_query = IHA.objects.all()
 
+        id = request.GET.get('id')
         brand = request.GET.get('brand')
         model = request.GET.get('model')
         weight = request.GET.get('weight')
         category = request.GET.get('category')
         price = request.GET.get('price')
 
+        if id:
+            ihas_query = ihas_query.filter(pk=id)
         if brand:
             ihas_query = ihas_query.filter(brand=brand)
         if model:
@@ -119,6 +127,7 @@ def get_specific_iha(request):
             ihas_query = ihas_query.filter(price=price)
 
         iha_data = [{
+            "id": iha.pk,
             "brand": iha.brand,
             "model": iha.model,
             "weight": iha.weight,
@@ -190,11 +199,9 @@ def update_iha(request, iha_id):
     except Exception as e:
         return JsonResponse({'status': False, 'message': str(e)}, status=400)
 
-
 """
 Customer
 """
-
 @csrf_exempt
 @require_http_methods(["POST"])
 def login_customer(request):
@@ -329,7 +336,7 @@ def get_specific_customer(request):
         username = request.GET.get('username')
 
         if customer_id:
-            customers_query = customers_query.filter(id=customer_id)
+            customers_query = customers_query.filter(pk=customer_id)
         if name:
             customers_query = customers_query.filter(name=name)
         if surname:
@@ -402,8 +409,6 @@ def update_customer(request, customer_id):
         return JsonResponse({'status': False, 'message': 'Customer not found.'}, status=404)
     except Exception as e:
         return JsonResponse({'status': False, 'message': str(e)}, status=400)
-
-
 
 """
 Reservation
@@ -512,7 +517,7 @@ def get_specific_reservation(request):
         customer_username = request.GET.get('customer_username')
 
         if reservation_id:
-            reservations_query = reservations_query.filter(id=reservation_id)
+            reservations_query = reservations_query.filter(pk=reservation_id)
         if start_date_from:
             reservations_query = reservations_query.filter(start_date__gte=start_date_from)
         if start_date_to:
