@@ -400,5 +400,64 @@ Header:
     <p><strong>POST /login</strong> - Authenticate a customer.</p>
     <p>Permissions: AllowAny</p>
     <p>POST Body: <code>{ "username": "", "password": "" }</code></p>
+    <h3>10. List Reservations (/api/reservations)</h3>
+<p>Retrieves a list of all reservations.</p>
+<pre><code>GET /api/reservations
+Header:
+    Authorization: Bearer [your_token_here]
+</code></pre>
+
+<h3>11. Create Reservation (/api/reservations/create)</h3>
+<p>Creates a new reservation. Requires reservation details in the request body.</p>
+<pre><code>POST /api/reservations/create
+Header:
+    Content-Type: application/json
+    Authorization: Bearer [your_token_here]
+Body:
+    {
+        "customer": "Customer ID",
+        "iha": "IHA ID",
+        "number": "Number of units",
+        "start_date": "YYYY-MM-DD",
+        "finish_date": "YYYY-MM-DD"
+    }
+</code></pre>
+
+<h3>12. Retrieve Specific Reservation (/api/reservations/&lt;id&gt;)</h3>
+<p>Retrieves details of a specific reservation by ID.</p>
+<pre><code>GET /api/reservations/&lt;id&gt;
+Header:
+    Authorization: Bearer [your_token_here]
+</code></pre>
+
+<h3>13. Update Reservation (/api/reservations/update/&lt;id&gt;)</h3>
+<p>Updates an existing reservation. Requires updated reservation details in the request body.</p>
+<pre><code>PUT /api/reservations/update/&lt;id&gt;
+Header:
+    Content-Type: application/json
+    Authorization: Bearer [your_token_here]
+Body:
+    {
+        "customer": "New Customer ID (optional)",
+        "iha": "New IHA ID (optional)",
+        "number": "New Number of units (optional)",
+        "start_date": "New start date YYYY-MM-DD (optional)",
+        "finish_date": "New finish date YYYY-MM-DD (optional)"
+    }
+</code></pre>
+
+<h3>14. Delete Reservation (/api/reservations/delete/&lt;id&gt;)</h3>
+<p>Deletes a specific reservation by ID.</p>
+<pre><code>DELETE /api/reservations/delete/&lt;id&gt;
+Header:
+    Authorization: Bearer [your_token_here]
+</code></pre>
+
+<h3>15. Find Specific Reservation (/api/reservation/find)</h3>
+<p>Retrieves specific reservation details based on various query parameters such as reservation ID, start date range, IHA brand/model, and customer details.</p>
+<pre><code>GET /api/reservation/find?reservation_id=[reservation_id]&amp;start_date_from=[start_date_from]&amp;start_date_to=[start_date_to]&amp;iha_brand=[iha_brand]&amp;iha_model=[iha_model]&amp;customer_name=[customer_name]&amp;customer_surname=[customer_surname]&amp;customer_username=[customer_username]
+Header:
+    Authorization: Bearer [your_token_here]
+</code></pre>
   </body>
 </html>
