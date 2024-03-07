@@ -345,5 +345,60 @@ Header:
     "status": false,
     "message": "Error message"
 }</code></pre>
+
+
+<h1>Rest API Documentation</h1>
+    
+    <h3>1. List/Create IHAs</h3>
+    <p><strong>GET /iha</strong> - List all IHAs.</p>
+    <p><strong>POST /iha</strong> - Create a new IHA.</p>
+    <p>Permissions: IsAuthenticated for POST</p>
+    <p>POST Body: <code>{ "field_name": value, ... }</code> depending on your IHA model fields.</p>
+
+    <h3>2. Retrieve/Update/Delete IHA</h3>
+    <p><strong>GET /iha/&lt;int:pk&gt;</strong> - Retrieve IHA details.</p>
+    <p><strong>PUT /iha/&lt;int:pk&gt;</strong> - Update an IHA.</p>
+    <p><strong>DELETE /iha/&lt;int:pk&gt;</strong> - Delete an IHA.</p>
+    <p>Permissions: IsAuthenticated</p>
+
+    <h3>3. List/Create Customers</h3>
+    <p><strong>GET /customers</strong> - List all customers.</p>
+    <p><strong>POST /customers</strong> - Create a new customer.</p>
+    <p>Permissions: AllowAny for POST</p>
+    <p>POST Body: <code>{ "email": "", "username": "", "password": "", "name": "", "surname": "" }</code></p>
+
+    <h3>4. Retrieve/Update/Delete Customer</h3>
+    <p><strong>GET /customers/&lt;int:pk&gt;</strong> - Retrieve customer details.</p>
+    <p><strong>PUT /customers/&lt;int:pk&gt;</strong> - Update a customer.</p>
+    <p><strong>DELETE /customers/&lt;int:pk&gt;</strong> - Delete a customer.</p>
+    <p>Permissions: IsAuthenticated</p>
+
+    <h3>5. Find Specific Reservation</h3>
+    <p>This endpoint allows for retrieving specific reservation details based on various query parameters such as reservation ID, start date range, IHA brand/model, and customer details.</p>
+    <pre><code>GET /api/reservation/find?reservation_id=[reservation_id]&amp;start_date_from=[start_date_from]&amp;start_date_to=[start_date_to]&amp;iha_brand=[iha_brand]&amp;iha_model=[iha_model]&amp;customer_name=[customer_name]&amp;customer_surname=[customer_surname]&amp;customer_username=[customer_username]
+Header:
+    Authorization: [your_token_here]</code></pre>
+
+    <h3>6. List/Create Reservations</h3>
+    <p><strong>GET /reservations</strong> - List all reservations.</p>
+    <p><strong>POST /reservations</strong> - Create a new reservation.</p>
+    <p>Permissions: IsAuthenticated</p>
+    <p>POST Body: <code>{ "customer": "", "iha": "", "number": "", "start_date": "", "finish_date": "" }</code></p>
+
+    <h3>7. Retrieve/Update/Delete Reservation</h3>
+    <p><strong>GET /reservations/&lt;int:pk&gt;</strong> - Retrieve reservation details.</p>
+    <p><strong>PUT /reservations/&lt;int:pk&gt;</strong> - Update a reservation.</p>
+    <p><strong>DELETE /reservations/&lt;int:pk&gt;</strong> - Delete a reservation.</p>
+    <p>Permissions: IsAuthenticated</p>
+
+    <h3>8. Customer Register</h3>
+    <p><strong>POST /register</strong> - Register a new customer.</p>
+    <p>Permissions: AllowAny</p>
+    <p>POST Body: <code>{ "email": "", "username": "", "password": "", "name": "", "surname": "" }</code></p>
+
+    <h3>9. Customer Login</h3>
+    <p><strong>POST /login</strong> - Authenticate a customer.</p>
+    <p>Permissions: AllowAny</p>
+    <p>POST Body: <code>{ "username": "", "password": "" }</code></p>
   </body>
 </html>
